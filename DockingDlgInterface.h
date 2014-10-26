@@ -63,7 +63,7 @@ public:
     virtual void destroy() {
     };
 
-	virtual void display(bool toShow = true) const {
+	virtual void display(bool toShow = true)  {
 		::SendMessage(_hParent, toShow?NPPM_DMMSHOW:NPPM_DMMHIDE, 0, (LPARAM)_hSelf);
 	};
 
@@ -110,7 +110,7 @@ protected :
 		}
 		return FALSE;
 	};
-	
+public:
 	// Handles
     HWND			_HSource;
 	tTbData*		_data;

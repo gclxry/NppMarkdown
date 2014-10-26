@@ -20,7 +20,7 @@
 
 //#include "resource.h"
 #include "Window.h"
-#include "../Notepad_plus_msgs.h"
+#include "Notepad_plus_msgs.h"
 
 enum PosAlign{ALIGNPOS_LEFT, ALIGNPOS_RIGHT, ALIGNPOS_TOP, ALIGNPOS_BOTTOM};
 

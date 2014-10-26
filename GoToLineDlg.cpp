@@ -14,9 +14,9 @@
 //You should have received a copy of the GNU General Public License
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-
+#include "stdafx.h"
 #include "GoToLineDlg.h"
-#include "../PluginDefinition.h"
+#include "PluginDefinition.h"
 
 extern NppData nppData;
 
@@ -30,25 +30,28 @@ BOOL CALLBACK DemoDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				case IDOK :
 				{
-					int line = getLine();
-					if (line != -1)
-					{
-						// Get the current scintilla
-						int which = -1;
-						::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
-						if (which == -1)
-							return FALSE;
-						HWND curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
-
-						::SendMessage(curScintilla, SCI_ENSUREVISIBLE, line-1, 0);
-						::SendMessage(curScintilla, SCI_GOTOLINE, line-1, 0);
-					}
 					return TRUE;
 				}
 			}
 				return FALSE;
 		}
+		break;
 
+		case WM_SIZE:
+			{
+				if (dlg)
+				{
+					// 调整预览对话框的大小
+					WTL::CString str;
+					int x = ((int)(short)LOWORD(lParam));
+					int y = ((int)(short)HIWORD(lParam));
+					dlg->ReSize(x, y);
+					dlg->ShowWindow(SW_SHOW);
+				}
+				return TRUE;
+			}
+
+			break;
 		default :
 			return DockingDlgInterface::run_dlgProc(message, wParam, lParam);
 	}

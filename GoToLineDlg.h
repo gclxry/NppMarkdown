@@ -20,32 +20,62 @@
 
 #include "DockingDlgInterface.h"
 #include "resource.h"
+#include "PreViewDlg.h"
+#include <atlfile.h>
+
+
+static WTL::CString GetTempPath()
+{
+	TCHAR szPath[MAX_PATH]; 
+	GetTempPath(MAX_PATH, szPath);
+	WTL::CString sTempPath = szPath;
+	sTempPath += TEXT("PJJXarv");
+	return sTempPath;
+}
+
+static void IniTempHtmlFile()
+{
+	WTL::CString sTempPath = GetTempPath();
+	CreateDirectory(sTempPath, NULL);
+	char* html = "<html><body></body></html>";
+	
+	sTempPath += L"\\html.html";
+	CAtlFile file;
+	file.Create(sTempPath, GENERIC_READ | GENERIC_WRITE, NULL, CREATE_ALWAYS);
+	DWORD dwWrite = 0;
+	file.Write(html, strlen(html), &dwWrite);
+}
+
 
 class DemoDlg : public DockingDlgInterface
 {
 public :
 	DemoDlg() : DockingDlgInterface(IDD_PLUGINGOLINE_DEMO){};
 
-    virtual void display(bool toShow = true) const {
+    virtual void display(bool toShow = true) {
         DockingDlgInterface::display(toShow);
-        if (toShow)
-            ::SetFocus(::GetDlgItem(_hSelf, ID_GOLINE_EDIT));
     };
 
 	void setParent(HWND parent2set){
 		_hParent = parent2set;
 	};
 
+	void create(tTbData * data, bool isRTL = false)
+	{
+		DockingDlgInterface::create(data, isRTL);
+		dlg = new CPreviewDlg;
+		WTL::CString sTempPath = GetTempPath();
+		IniTempHtmlFile();
+		dlg->Ini(sTempPath + L"\\html.html");
+		dlg->Create(_hSelf, NULL);
+	};
+
+CPreviewDlg* dlg;
 protected :
 	virtual BOOL CALLBACK run_dlgProc(UINT message, WPARAM wParam, LPARAM lParam);
 
-private :
 
-    int getLine() const {
-        BOOL isSuccessful;
-        int line = ::GetDlgItemInt(_hSelf, ID_GOLINE_EDIT, &isSuccessful, FALSE);
-        return (isSuccessful?line:-1);
-    };
+	
 
 };
 

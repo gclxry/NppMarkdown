@@ -19,7 +19,7 @@
 
 extern FuncItem funcItem[nbFunc];
 extern NppData nppData;
- 
+
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  reasonForCall, 
