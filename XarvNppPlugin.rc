@@ -99,8 +99,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,0,10,26
- PRODUCTVERSION 2,0,10,26
+ FILEVERSION 2,0,10,28
+ PRODUCTVERSION 2,0,10,28
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -118,12 +118,12 @@ BEGIN
             VALUE "Comments", "a markdown plugin for Notepad++"
             VALUE "CompanyName", "www.gclxry.com"
             VALUE "FileDescription", "a markdown plugin for Notepad++"
-            VALUE "FileVersion", "2.0.10.26"
+            VALUE "FileVersion", "2.0.10.28"
             VALUE "InternalName", "NppMarkdown"
             VALUE "LegalCopyright", "www.gclxry.com Copyright (C) 2014"
             VALUE "OriginalFilename", "NppMarkdown.dll"
             VALUE "ProductName", "NppMarkdown Dynamic Link Library"
-            VALUE "ProductVersion", "2.0.10.26"
+            VALUE "ProductVersion", "2.0.10.28"
         END
     END
     BLOCK "VarFileInfo"
