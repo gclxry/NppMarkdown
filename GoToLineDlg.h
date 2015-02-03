@@ -23,27 +23,36 @@
 #include "PreViewDlg.h"
 #include <atlfile.h>
 
-
 static WTL::CString GetTempPath()
 {
 	TCHAR szPath[MAX_PATH]; 
 	GetTempPath(MAX_PATH, szPath);
 	WTL::CString sTempPath = szPath;
-	sTempPath += TEXT("PJJXarv");
+	sTempPath += TEXT("nppmarkdown");
 	return sTempPath;
 }
 
-static void IniTempHtmlFile()
+
+
+static WTL::CString IniTempHtmlFile()
 {
 	WTL::CString sTempPath = GetTempPath();
+  WTL::CString sTemplate;
 	CreateDirectory(sTempPath, NULL);
-	char* html = "<html><body></body></html>";
-	
 	sTempPath += L"\\html.html";
-	CAtlFile file;
-	file.Create(sTempPath, GENERIC_READ | GENERIC_WRITE, NULL, CREATE_ALWAYS);
-	DWORD dwWrite = 0;
-	file.Write(html, strlen(html), &dwWrite);
+  const char* html = "<html><body></body></html>";
+
+  sTemplate = GetTempPath() + L"\\template.html";
+  if (!PathFileExistsW(sTemplate))
+  {
+    CAtlFile file;
+    file.Create(sTempPath, GENERIC_READ | GENERIC_WRITE, NULL, CREATE_ALWAYS);
+    DWORD dwWrite = 0;
+    file.Write(html, strlen(html), &dwWrite);
+    sTemplate = sTempPath;
+  }
+
+  return sTemplate;
 }
 
 
@@ -64,9 +73,9 @@ public :
 	{
 		DockingDlgInterface::create(data, isRTL);
 		dlg = new CPreviewDlg;
-		WTL::CString sTempPath = GetTempPath();
-		IniTempHtmlFile();
-		dlg->Ini(sTempPath + L"\\html.html");
+    WTL::CString sHtmlPath;
+    sHtmlPath = IniTempHtmlFile();
+    dlg->Ini(sHtmlPath);
 		dlg->Create(_hSelf, NULL);
 	};
 
