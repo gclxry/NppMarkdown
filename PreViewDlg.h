@@ -7,6 +7,9 @@
 #include <iostream>
 #include <sstream>
 #include "markdown.h"
+#include <locale>
+#include <codecvt>
+
 using namespace std;
 
 extern CAppModule _Module;
@@ -80,10 +83,28 @@ public:
 		doc.write(stream);
 		std::string aHtml =  stream.str();
 
-		USES_CONVERSION;
-		wstring wHtml = A2W(aHtml.c_str());
+    USES_CONVERSION;
+    int codepage = (int)::SendMessage(curScintilla, SCI_GETCODEPAGE, 0, 0);
+    wstring wHtml;
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+    switch (codepage)
+    {
+    case (int)SC_CHARSET_ANSI:
+    case (int)SC_CHARSET_GB2312:
+    case (int)936: // GBK
+      wHtml = A2W(aHtml.c_str());
+      break;
+    case (int)SC_CP_UTF8:
+      wHtml = myconv.from_bytes(aHtml);
+      break;
+      // ADD YOUR ENCODING HERE ...
+    default:
+      wHtml = _T("Not supported encoding (UTF8/GB2312/GBK/ANSI)");
+      break;
+    }
 
-		SetBodyText(wHtml.c_str());
+    SetBodyText(wHtml.c_str());
+
 		delete[] buf;
 	}
 
