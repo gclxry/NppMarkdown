@@ -116,7 +116,7 @@ public:
 
 	void ReSize(int x, int y)
 	{
-		int btnSize = 50;
+		int btnSize = 20;
 		int btnwidth = x/2 - 5;
 		RECT rc;
 		rc.left = 0;
